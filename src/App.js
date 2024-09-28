@@ -1,24 +1,55 @@
-import logo from './logo.svg';
-import './App.css';
+import { Provider } from "react-redux";
+import Body from "./components/Body";
+import appStore from "./utils/appStore";
+import TopRestaurant from "./components/TopRestaurant";
+import RestaurantMenu from "./components/RestaurantMenu";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Cart from "./components/Cart";
+import Error from "./components/Error";
+
+const appRouter = createBrowserRouter([
+  {
+    path: "/",
+    element: <Body />,
+    errorElement: <Error />,
+    children: [
+
+      {
+        path: "/",
+        element: <TopRestaurant />,
+      },
+      {
+        path: "/restaurants/:resId",
+        element: <RestaurantMenu />
+      },
+      {
+        path: "/cart",
+        element: <Cart/>
+      }
+
+    ]
+  },
+
+])
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={appStore} className="bg-slate-100">
+      <RouterProvider router={appRouter} />
+      <ToastContainer
+          position="bottom-right"
+          autoClose={2000}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss={false}
+          draggable
+          pauseOnHover
+        />
+    </Provider>
   );
 }
 
